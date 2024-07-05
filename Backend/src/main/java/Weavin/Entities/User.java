@@ -3,12 +3,13 @@ package Weavin.Entities;
 import Weavin.Enums.Field;
 import Weavin.Enums.Presence;
 import Weavin.Enums.ReportStatus;
+import Weavin.Enums.Role;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,16 @@ import java.util.List;
 @Setter
 @Table(name = "USERS")
 public class User {
+
+    public User(String username, String email, Role role) {
+        this.username = username;
+        this.email = email;
+        this.role = role;
+    }
+
+    public User() {
+
+    }
 
     @Id
     @GeneratedValue
@@ -74,4 +85,12 @@ public class User {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<ForumPost> forumPostList;
+
+    @Column
+    private Role role;
+
+    @Column
+    private String refreshToken;
+
+    
 }

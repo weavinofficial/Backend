@@ -3,7 +3,6 @@ package Weavin.Repositories;
 import Weavin.Entities.MarketPost;
 import Weavin.Entities.User;
 import org.springframework.data.repository.CrudRepository;
-import org.yaml.snakeyaml.error.Mark;
 
 import java.util.List;
 

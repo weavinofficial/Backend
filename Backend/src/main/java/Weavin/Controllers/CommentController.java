@@ -3,20 +3,14 @@ package Weavin.Controllers;
 import Weavin.Entities.Comment;
 import Weavin.Entities.ForumPost;
 import Weavin.Entities.MarketPost;
-import Weavin.Entities.User;
-import Weavin.Enums.Presence;
-import Weavin.Enums.ReportStatus;
 import Weavin.Repositories.CommentRepository;
 import Weavin.Repositories.ForumPostRepository;
 import Weavin.Repositories.MarketPostRepository;
-import Weavin.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

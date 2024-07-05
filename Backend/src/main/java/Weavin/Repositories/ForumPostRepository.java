@@ -2,7 +2,6 @@ package Weavin.Repositories;
 
 import Weavin.Entities.ForumPost;
 import Weavin.Entities.User;
-import Weavin.Enums.ReportStatus;
 import org.springframework.data.repository.CrudRepository;
 
 

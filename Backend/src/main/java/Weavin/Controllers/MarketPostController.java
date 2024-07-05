@@ -1,6 +1,5 @@
 package Weavin.Controllers;
 
-import Weavin.Entities.ForumPost;
 import Weavin.Entities.MarketPost;
 import Weavin.Entities.User;
 import Weavin.Repositories.MarketPostRepository;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.yaml.snakeyaml.error.Mark;
 
 import java.util.Date;
 import java.util.List;
