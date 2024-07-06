@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-WeavinApplication<Weavin>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "Weavin.WeavinApplication",
+            "projectName": "Weavin",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

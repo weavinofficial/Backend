@@ -42,6 +42,19 @@ public class UserController {
         this.userRepository.save(user);
     }
 
+    // @PostMapping("/login")
+    // @ResponseStatus(HttpStatus.OK)
+    // public void login(@RequestBody User user) {
+    //     Optional<User> userOptional = this.userRepository.findByEmail(user.getEmail());
+    //     if (userOptional.isEmpty()) {
+    //         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+    //     }
+    //     User userToBeLoggedIn = userOptional.get();
+    //     if (!userToBeLoggedIn.getPassword().equals(user.getPassword())) {
+    //         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password.");
+    //     }
+    // }
+
     // DELETE request to delete a user
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

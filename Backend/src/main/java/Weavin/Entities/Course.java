@@ -2,18 +2,24 @@ package Weavin.Entities;
 
 import Weavin.Enums.Grade;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "COURSES")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Course {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

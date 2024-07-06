@@ -1,7 +1,10 @@
 package Weavin.Entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -10,11 +13,14 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "SEMESTERS")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Semester {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
     @Column
     private int numOfCourse;

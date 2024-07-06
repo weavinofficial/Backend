@@ -7,7 +7,10 @@ import Weavin.Enums.Role;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -17,6 +20,9 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "USERS")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     public User(String username, String email, Role role) {
@@ -25,13 +31,9 @@ public class User {
         this.role = role;
     }
 
-    public User() {
-
-    }
-
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
     @Column
     private String username;
@@ -68,6 +70,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column
+    @Builder.Default()
     private ReportStatus reportStatus = ReportStatus.SAFE;
 
     @JsonIgnore

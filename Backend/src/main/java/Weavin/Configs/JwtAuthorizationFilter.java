@@ -33,6 +33,8 @@ public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
 
+            System.out.println("Filtering Authorization");
+
             if (! jwtService.isHeaderValid((HttpServletRequest) request)) {
                 request.setAttribute("Exception", "Invalid header");
                 chain.doFilter(request, response);

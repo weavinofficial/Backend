@@ -18,25 +18,31 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private AuthenticationManager authenticationManager;
+
+    @Autowired
     private JwtService jwtService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(login -> login.disable())
                 .httpBasic(login -> login.disable())
-                .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtService))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager, jwtService))
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/login").permitAll();
-                    authorize.requestMatchers("/signup").hasAnyRole("UNAUTHORIZED", "UNVERIFIED");
-                    authorize.requestMatchers("/admin").hasRole("ADMIN");
-                    authorize.anyRequest().authenticated();
+                    authorize.requestMatchers("*").permitAll();
+                    // authorize.requestMatchers("/login").permitAll();
+                    // authorize.requestMatchers("/signup").hasAnyRole("UNAUTHORIZED", "UNVERIFIED");
+                    // authorize.requestMatchers("/admin").hasRole("ADMIN");
+                    // authorize.anyRequest().authenticated();
                 })
-                .csrf(csrf -> csrf.disable());
+                .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtService))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager, jwtService));
+                
+                
         
         return http.build();
     }

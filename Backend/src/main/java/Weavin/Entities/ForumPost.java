@@ -2,23 +2,32 @@ package Weavin.Entities;
 import Weavin.Enums.Field;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @Entity
 @Setter
 @Getter
 @Table(name = "FORUM_POSTS")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ForumPost {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private User user;
 
@@ -33,25 +42,32 @@ public class ForumPost {
     private Field field;
 
     @Column
+    @CreationTimestamp
     private Date createdAt;
 
     @Column
+    @UpdateTimestamp
     private Date updatedAt;
 
     @Column
-    private boolean isUpdated;
+    @Builder.Default()
+    private boolean isUpdated = false;
 
     @Column
-    private int likes;
+    @Builder.Default()
+    private Integer likes = 0;
 
     @Column
-    private int views;
+    @Builder.Default()
+    private Integer views = 0;
 
     @JsonIgnore
     @Column
-    private int reports;
+    @Builder.Default()
+    private Integer reports = 0;
 
     @Column
+    @Builder.Default()
     private boolean reportStatus = false;
 
     @OneToMany(mappedBy = "forumPost", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

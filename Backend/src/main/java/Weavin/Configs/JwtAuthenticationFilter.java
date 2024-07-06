@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final String jwtSecret = "tempSecretKey";
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = this.obtainUsername(request);
         String password = this.obtainPassword(request);
 
@@ -57,9 +57,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
+        System.out.println("Filtering Authentication");
+
         String jwtHeader = httpRequest.getHeader("Authorization");
         if (jwtHeader == null || !jwtHeader.startsWith("Bearer ")) {
             chain.doFilter(request, response);
+
             return;
         }
 
@@ -81,6 +84,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Role.getRoleFromString(roleString);
         } catch (Exception e) {
             chain.doFilter(request, response);
+            
             return;
         }
 
