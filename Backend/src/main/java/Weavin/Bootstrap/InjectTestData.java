@@ -51,15 +51,17 @@ public class InjectTestData implements CommandLineRunner{
         User user1 = User.builder()
                 .username("user1")
                 .email("testEmail@gmail.com")
+                .password("password1")
                 .build();
         
         User user2 = User.builder()
                 .username("user2")
                 .email("testEmail2@gmail.com")
+                .password("password2")
                 .build();
 
-        userRepository.save(user1);
-        userRepository.save(user2);
+        user1 = userRepository.save(user1);
+        user2 = userRepository.save(user2);
 
         List<User> users = new ArrayList<User>();
         users.add(user1);
@@ -83,8 +85,8 @@ public class InjectTestData implements CommandLineRunner{
                 .field(Field.SOC)
                 .build();
 
-        forumPostRepository.save(post1);
-        forumPostRepository.save(post2);
+        post1 = forumPostRepository.save(post1);
+        post2 = forumPostRepository.save(post2);
 
         List<ForumPost> posts = new ArrayList<ForumPost>();
         posts.add(post1);

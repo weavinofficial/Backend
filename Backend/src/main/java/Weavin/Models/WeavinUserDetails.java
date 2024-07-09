@@ -23,7 +23,7 @@ public class WeavinUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         Role role = this.user.getRole();
-        authorities.add(() -> role.name());
+        authorities.add(() -> "ROLE_" + role.name());
 
         return authorities;
     }

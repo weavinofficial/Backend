@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Setter
+@Data
 @Getter
 @Table(name = "FORUM_POSTS")
 @Builder
@@ -27,8 +29,8 @@ public class ForumPost {
     @GeneratedValue
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column

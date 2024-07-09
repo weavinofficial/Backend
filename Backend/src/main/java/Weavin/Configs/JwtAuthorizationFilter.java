@@ -1,80 +1,83 @@
 package Weavin.Configs;
 
-import java.io.IOException;
+import javax.crypto.SecretKey;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import Weavin.Entities.User;
+import Weavin.Enums.Role;
 import Weavin.Models.WeavinUserDetails;
-import Weavin.Services.JwtService;
+import Weavin.Repositories.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.IOException;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private final JwtService jwtService;
+    private String SECRET_KEY = "ASecretKeyLongEnoughToBeSecureButNotTooLongToBeUnreadableDontLaughAtMePleaseXD";
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, JwtService jwtService) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
-        this.jwtService = jwtService;
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         try {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-            System.out.println("Filtering Authorization");
-
-            if (! jwtService.isHeaderValid((HttpServletRequest) request)) {
-                request.setAttribute("Exception", "Invalid header");
+            String jwtHeader = httpRequest.getHeader("Authorization");
+            if (jwtHeader == null || !jwtHeader.startsWith("Bearer ")) {
                 chain.doFilter(request, response);
+
                 return;
             }
 
-            String accessToken = httpRequest.getHeader("Authorization").replace("Bearer ", "");
-            String refreshToken = httpRequest.getHeader("Authentication-refresh").replace("Bearer ", "");
+            String jwtToken = jwtHeader.replace("Bearer ", "");
+            String username, email = null;
+            Role role = Role.UNAUTHENTICATED;
 
-            if (! jwtService.isTokenValid(refreshToken)) {
-                request.setAttribute("Exception", "Invalid refresh token");
-                chain.doFilter(request, response);
-                return;
-            }
+            JwtParser parser = Jwts
+                    .parser()
+                    .verifyWith(this.getSigningKey())
+                    .build();
 
-            User user = jwtService.getUserByRefreshToken(refreshToken);
-            String username = user.getUsername();
-            String email = user.getEmail();
-            String role = user.getRole().name();
+            Claims claims = parser.parseSignedClaims(jwtToken).getPayload();
+            username = claims.get("username", String.class);
+            email = claims.get("email", String.class);
+            String roleString = claims.get("role", String.class);
 
-            if (jwtService.isNeedToUpdateRefreshToken(refreshToken)) {
-                String newRefreshToken = jwtService.createRefreshToken();
-                jwtService.setRefreshToken(username, newRefreshToken);
-                httpResponse.addHeader("Authentication-refresh", "Bearer " + newRefreshToken);
-            }
+            role = Role.getRoleFromString(roleString);
 
-            if (jwtService.isExpiredToken(accessToken)) {
-                accessToken = jwtService.createAccessToken(username, email, role);
-                httpResponse.addHeader("Authorization", "Bearer " + accessToken);
-            }
+            WeavinUserDetails userDetails = new WeavinUserDetails(new User(username, email, role));
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+                    userDetails.getAuthorities());
 
-            WeavinUserDetails userDetails = new WeavinUserDetails(user);
-            Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            System.out.println("Authorization Success");
+
+            chain.doFilter(httpRequest, httpResponse);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        chain.doFilter(request, response);
+    private SecretKey getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(this.SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

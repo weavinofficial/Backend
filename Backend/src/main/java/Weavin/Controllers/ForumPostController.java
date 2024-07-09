@@ -1,4 +1,5 @@
 package Weavin.Controllers;
+
 import Weavin.Entities.ForumPost;
 import Weavin.Entities.User;
 import Weavin.Repositories.ForumPostRepository;
@@ -26,7 +27,7 @@ public class ForumPostController {
     // GET request to get all forum posts that are not banned
     @GetMapping("/forumposts")
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<ForumPost> getForumPosts() {
+    public List<ForumPost> getForumPosts() {
         return this.forumPostRepository.findByReportStatusFalse();
     }
 

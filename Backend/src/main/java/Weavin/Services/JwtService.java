@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class JwtService {
-    private String SECRET_KEY = "tempSecret";
+    private String SECRET_KEY = "ASecretKeyLongEnoughToBeSecureButNotTooLongToBeUnreadableDontLaughAtMePleaseXD";
 
     private final int jwtExpirationMs = 900000;
 
@@ -39,6 +39,7 @@ public class JwtService {
         User user = userRepository.findByUsername(username);
         if (user != null) {
             user.setRefreshToken(refreshToken);
+            userRepository.save(user);
         }
     }
 

@@ -4,11 +4,15 @@ import Weavin.Enums.Field;
 import Weavin.Enums.Presence;
 import Weavin.Enums.ReportStatus;
 import Weavin.Enums.Role;
+import io.jsonwebtoken.security.Password;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,14 +20,22 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.lang.NonNull;
+
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "USERS")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
+    public User(String username, String email, Field field, String password) {
+        this.username = username;
+        this.email = email;
+        this.field = field;
+        this.password = password;
+    }
 
     public User(String username, String email, Role role) {
         this.username = username;
@@ -36,6 +48,7 @@ public class User {
     private Integer id;
 
     @Column
+    @Nonnull
     private String username;
 
     @JsonIgnore
@@ -44,10 +57,12 @@ public class User {
 
     @JsonIgnore
     @Column
+    @NonNull
     private String email;
 
     @JsonIgnore
     @Column
+    @Nonnull
     private String password;
 
     @Column
@@ -86,7 +101,7 @@ public class User {
     private List<Semester> semesterList;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<ForumPost> forumPostList;
 
     @Column
