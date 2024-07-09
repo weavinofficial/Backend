@@ -11,7 +11,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import Weavin.Entities.User;
 import Weavin.Enums.Role;
 import Weavin.Models.WeavinUserDetails;
-import Weavin.Repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;

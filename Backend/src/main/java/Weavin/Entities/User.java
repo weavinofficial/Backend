@@ -4,7 +4,6 @@ import Weavin.Enums.Field;
 import Weavin.Enums.Presence;
 import Weavin.Enums.ReportStatus;
 import Weavin.Enums.Role;
-import io.jsonwebtoken.security.Password;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,9 +12,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;

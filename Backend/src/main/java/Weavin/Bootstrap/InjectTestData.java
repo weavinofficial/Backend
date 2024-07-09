@@ -15,7 +15,6 @@ import Weavin.Entities.User;
 import Weavin.Enums.Field;
 import Weavin.Repositories.CommentRepository;
 import Weavin.Repositories.ForumPostRepository;
-import Weavin.Repositories.SemesterRepository;
 import Weavin.Repositories.TagRepository;
 import Weavin.Repositories.UserRepository;
 
@@ -34,9 +33,6 @@ public class InjectTestData implements CommandLineRunner{
 
     @Autowired
     private CommentRepository commentRepository;
-
-    @Autowired
-    private SemesterRepository semesterRepository;
 
     @Override
     public void run(String... args) throws Exception {
